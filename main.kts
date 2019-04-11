@@ -9,8 +9,8 @@ fun whenFn(arg: Any?): String {
    0 -> return "zero"
    1 -> return "one"
    in 2..10 -> return "low number"
-  is String -> return "I don't understand"
-  is Number -> return "a number"
+  is String -> return "Say what?"
+  is Int -> return "a number"
   else -> return "I don't understand"
   }
 }
@@ -53,7 +53,7 @@ class Money(var amount: Int, var currency: String = "USD") {
           "USD" -> convertFromUSD(convertedCurrency)
           "EUR" -> convertFromEUR(convertedCurrency)
           "CAN" ->convertFromCAN(convertedCurrency)
-          "GBP" -> convertFromUSD(convertedCurrency)
+          "GBP" -> convertFromGBP(convertedCurrency)
           else -> this.amount
       }
       return Money(newAmount, convertedCurrency)
@@ -89,7 +89,7 @@ class Money(var amount: Int, var currency: String = "USD") {
       return newAmount
   }
 
-  private fun converFromGBP(convertedCurrency: String): Int {
+  private fun convertFromGBP(convertedCurrency: String): Int {
       var result = when(convertedCurrency) {
           "USD" -> this.amount * 2
           "CAN" -> (this.amount * 5) / 2
@@ -98,9 +98,11 @@ class Money(var amount: Int, var currency: String = "USD") {
       }
       return result
   }
+
   operator fun plus(otherMoney: Money): Money {
-      var convertedAmount = otherMoney.convert(this.currency)
-      return Money(this.amount + convertedAmount.amount, this.currency)
+      var convertedAmount = otherMoney.convert(this.currency).amount
+      var totalAmount = this.amount + convertedAmount
+      return Money(totalAmount, this.currency)
   }
 }
 
