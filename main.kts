@@ -48,6 +48,15 @@ class Person(var firstName: String, var lastName: String, var age: Int) {
 class Money(var amount: Int, var currency: String = "USD") {
   val legalCurrency = arrayOf("USD", "EUR", "CAN", "GBP")
 
+  init {
+        if (!legalCurrency.contains(currency)) {
+            throw Exception("Currency is not valid.")
+        } 
+        if (this.amount < 0 ) {
+          throw Exception("Amount is less than 0")
+        }
+  }
+
   public fun convert(convertedCurrency: String): Money {
       var newAmount: Int = when(this.currency) {
           "USD" -> convertFromUSD(convertedCurrency)
